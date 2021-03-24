@@ -6,7 +6,7 @@
             {
                 "navigationBarTitleText": "登录",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
         }
@@ -16,7 +16,7 @@
             {
                 "navigationBarTitleText": "注册",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
             
@@ -27,7 +27,7 @@
             {
                 "navigationBarTitleText": "忘记密码",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
             
@@ -38,7 +38,7 @@
             {
                 "navigationBarTitleText": "班课",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
             
@@ -49,7 +49,7 @@
             {
                 "navigationBarTitleText": "创建班课",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
             
@@ -60,7 +60,7 @@
             {
                 "navigationBarTitleText": "我的",
                 "enablePullDownRefresh": false,
-				"navigationBarBackgroundColor":"#007AFF",
+				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
             }
             
