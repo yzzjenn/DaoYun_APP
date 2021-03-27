@@ -65,6 +65,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/userTeacher/userTeacher",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "用户信息",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

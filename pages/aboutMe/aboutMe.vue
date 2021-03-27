@@ -10,9 +10,9 @@
 				<text>jakcic</text>
 				<text>工号</text>
 			</view>
-			<view class="arrowRight">
+			<navigator class="arrowRight" url="../userTeacher/userTeacher">
 				<uni-icons type="arrowright" size="30"></uni-icons>
-			</view>
+			</navigator>
 		</view>
 		<view class="choice" v-for="(item,index) in choices" :key="index">
 			<about-me-item :message="item"></about-me-item>
