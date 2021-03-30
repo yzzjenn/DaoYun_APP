@@ -108,5 +108,6 @@
 	}
 	button{
 		border-radius: 40rpx;
+		margin-top: 10rpx;
 	}
 </style>
