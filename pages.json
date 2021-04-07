@@ -85,6 +85,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/bankeInformation/bankeInformation",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "班课信息",
+                "enablePullDownRefresh": true,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -112,8 +123,15 @@
 				"iconPath":"static/icon/member.png",
 				"selectedIconPath":"static/icon/member-active.png"
 			}
-		],
+		],	
 		"selectedColor":"#b50e03",
 		"color":"#C0C0C0"
-	}
+	},
+	"easycom": {
+	        "autoscan": true,
+	        "custom": {
+	            // uni-ui 规则如下配置
+	            "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+	        }
+	    }
 }
