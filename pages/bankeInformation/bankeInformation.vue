@@ -2,7 +2,7 @@
 	<view class="Information">
 		<view class="member" v-show="index===0">
 			<view class="top">
-				<button></button>
+				<button @click="goToSign"></button>
 				<view style="margin-top: 210rpx;position: absolute;margin-left: 320rpx;">
 					<text style="color:#2697EB ;font-size: 26rpx;">发起签到</text>	
 				</view>
@@ -68,6 +68,11 @@
 		methods: {
 			tabChange(index){
 				this.index=index;
+			},
+			goToSign(){
+				uni.navigateTo({
+					url:'../sign/sign'
+				})
 			}
 		},
 		components: {

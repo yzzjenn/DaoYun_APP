@@ -96,6 +96,17 @@
             }
             
         }
+        ,{
+            "path" : "pages/sign/sign",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "签到",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
