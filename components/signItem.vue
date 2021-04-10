@@ -1,34 +1,49 @@
 <template>
 	<view class="signItem">
-		<button><uni-icons type="checkbox" size="30"></uni-icons></button>
-		<text>一键签到</text>
+		<view v-for="(item , index) in signItemStyle" :key="index" class="signItemChild">
+			<button :style="{
+				backgroundColor:item.backgroundColor}" @click="goToSign(index)">
+				<view :class="item.type"></view>
+			</button>
+			<text :style="{
+				color:item.color
+			}">{{item.text}}</text>
+		</view>
+		
 	</view>
 </template>
 
 <script>
 	export default {
 		name:"signItem",
-		props:['backgroundColor',''],
+		props:['signItemStyle'],
 		data() {
 			return {
-				btnStyle:{
-					'background-color':''
-				}
+				navigateUrl:['../oneSign/oneSign','../gestureSign/gestureSign','../checkIn/checkIn']
 			};
 		},
-		beforeCreate:function(){
-			this.btnStyle["background-color"]=backgroundColor;
+		methods:{
+			goToSign(index){
+				uni.navigateTo({
+					url:this.navigateUrl[index]
+				})
+			}
 		}
+	
 	}
 </script>
 
 <style>
 	.signItem{
 		text-align: center;
+		display:flex;
+	}
+	.signItemChild{
+		flex:1;
 	}
 text{
 	font-size: 28rpx;
-	color: #007AFF;
+	/* color: #007AFF; */
 }
 button{
 	width: 124rpx;
