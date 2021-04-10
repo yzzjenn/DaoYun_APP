@@ -7,11 +7,19 @@
 			<text>历史签到记录</text>
 			<text>历史详情</text>
 		</view>
+		<uni-list>
+			<uni-list-item link direction="row">
+				<template slot="body">
+					<sign-record></sign-record>
+				</template>
+			</uni-list-item>
+		</uni-list>
 	</view>
 </template>
 
 <script>
 	import signItem from '../../components/signItem.vue'
+	import signRecord from '../../components/sign/signRecord.vue'
 	export default {
 		data() {
 			return {
@@ -33,14 +41,15 @@
 						type: 'iconfont icon-qiandao',
 						text: '手工登记'
 					}
-				]
+				],
 			}
 		},
 		methods: {
 
 		},
 		components: {
-			signItem
+			signItem,
+			signRecord
 		}
 	}
 </script>
@@ -58,7 +67,7 @@
 	.historyText text:nth-child(1){
 		font-size: 26rpx;
 		color: #797979;
-		text-align: left;
+		/* text-align: left; */
 		/* float: left;
 		position: absolute;
 		left: 10rpx; */

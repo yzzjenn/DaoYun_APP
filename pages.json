@@ -107,6 +107,39 @@
             }
             
         }
+        ,{
+            "path" : "pages/gestureSign/gestureSign",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "手势签到",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
+        ,{
+            "path" : "pages/oneSign/oneSign",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "一键签到",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
+        ,{
+            "path" : "pages/checkIn/checkIn",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "手工登记",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

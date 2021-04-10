@@ -2,7 +2,7 @@
 	<view class="signItem">
 		<view v-for="(item , index) in signItemStyle" :key="index" class="signItemChild">
 			<button :style="{
-				backgroundColor:item.backgroundColor}">
+				backgroundColor:item.backgroundColor}" @click="goToSign(index)">
 				<view :class="item.type"></view>
 			</button>
 			<text :style="{
@@ -19,9 +19,16 @@
 		props:['signItemStyle'],
 		data() {
 			return {
-			
+				navigateUrl:['../oneSign/oneSign','../gestureSign/gestureSign','../checkIn/checkIn']
 			};
 		},
+		methods:{
+			goToSign(index){
+				uni.navigateTo({
+					url:this.navigateUrl[index]
+				})
+			}
+		}
 	
 	}
 </script>
