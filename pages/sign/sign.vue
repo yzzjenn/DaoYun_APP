@@ -8,7 +8,7 @@
 			<text>历史详情</text>
 		</view>
 		<uni-list>
-			<uni-list-item link direction="row">
+			<uni-list-item link to="../signDetail/signDetail" direction="row">
 				<template slot="body">
 					<sign-record></sign-record>
 				</template>

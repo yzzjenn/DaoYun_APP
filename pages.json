@@ -134,9 +134,31 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "手工登记",
-                "enablePullDownRefresh": false,
+                "enablePullDownRefresh": true,
 				"navigationBarBackgroundColor":"#1B82D2",
 				"navigationBarTextStyle":"white"
+            }
+            
+        }
+        ,{
+            "path" : "pages/signDetail/signDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "签到详情",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"	
+            }
+            
+        }
+        ,{
+            "path" : "pages/joinClass/joinClass",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "加入班课",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"		
             }
             
         }
