@@ -98,6 +98,9 @@
 				<navigator url="../forgetPassword/forgetPassword">
 					<text style="float: right;">忘记密码</text>
 				</navigator>
+				<navigator url="../oneSign/oneSign">
+					<text>一键签到</text>
+				</navigator>
 			</view>
 		</view>
 
@@ -168,9 +171,19 @@
 				})
 			},
 			passsubmit: function(e) {
+				uni.switchTab({
+					url:'../class/class'
+				})
+				let that = this
 				this.$refs.passform.submit().then(res => {
 					uni.hideLoading()
 					console.log('表单数据信息：', res);
+					let phone = res.account
+					that.http.sendRequest('/mobileApp/userInfo?phone='+phone,{},'post',{
+						 'Content-Type':  'application/json',
+					}).then(function(res){
+						console.log(res)
+					})
 				}).catch(err => {
 					uni.hideLoading()
 					console.log('表单错误信息：', err);
