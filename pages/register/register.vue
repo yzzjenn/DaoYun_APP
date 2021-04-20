@@ -40,13 +40,13 @@
 						<uni-data-checkbox v-model="formData.sex" :localdata="sex"></uni-data-checkbox>
 					</uni-forms-item>
 					<uni-forms-item label="学校" name="school">
-						<picker mode="selector" @change="binddata" :range="finalGrade" 
-						:range-key="'text'" v-model="formData.school">
-						<uni-icons type="arrowright"></uni-icons>
-						</picker>
+						<uni-data-picker popup-title="请选择学校院系" :localdata="school" >
+							<!-- <text>{{scoCheckedText+depCheckedText}}</text> -->
+							<uni-icons type="arrowright"></uni-icons>
+						</uni-data-picker>
 					</uni-forms-item>
 					<uni-forms-item label="学院" name="college">
-						<uni-data-checkbox v-model="formData.college" :localdata="college"></uni-data-checkbox>
+						<!-- <uni-data-checkbox v-model="formData.college" :localdata="college"></uni-data-checkbox> -->
 					</uni-forms-item>
 					<view class="reBtn">
 						<button type="primary" @click="previous" style="flex: 1;" size="mini">上一部</button>
@@ -62,6 +62,31 @@
 	export default {
 		data() {
 			return {
+				school:[
+						{value:'01',
+						text:'福州农林大学',
+						children:[{value:'001',text:'美术学院'},
+								{value:'002',text:'数计学院'},
+								{value:'003',text:'经管学院'}]
+						},
+						{value:'02',
+						text:'福州大学',
+						children:[{value:'001',text:'美术学院'},
+								{value:'002',text:'数计学院'},
+								{value:'003',text:'经管学院'}],
+						},
+						{value:'03',
+						text:'福州医科大学',
+						children:[{value:'001',text:'美术学院'},
+								{value:'002',text:'数计学院'},
+								{value:'003',text:'经管学院'}],
+						},
+						{value:'04',
+						text:'福建师范大学',
+						children:[{value:'001',text:'美术学院'},
+								{value:'002',text:'数计学院'},
+								{value:'003',text:'经管学院'}],
+						}],
 				finalGrade:[
 						{id:'01',text:'60%'},
 						{id:'02',text:'70%'},
@@ -170,11 +195,24 @@
 		onReady() {
 			this.$refs.form.setRules(this.rules)
 		},
+		onLoad(){
+			this.http.sendRequest('/mobileApp/college',{},'post',{
+				'Content-Type':  'application/json',
+			}).then(function(res){
+				console.log(res)
+				this.school = res
+			})
+		},
 		methods: {
 			submit: function(e) {
 				this.$refs.form.submit().then(res => {
 					uni.hideLoading()
 					console.log('表单数据信息：', res);
+					if(res.status === 'student'){
+						
+					}if(res.status === 'teacher'){
+						
+					}
 				}).catch(err => {
 					uni.hideLoading()
 					console.log('表单错误信息：', err);
@@ -188,11 +226,6 @@
 			},
 			previous:function () {
 				this.current--
-			},
-			binddata:function(e) {
-				console.log(e.target.value)
-				// this.$refs.form.setValue(name,value)
-				// console.log(value)
 			}
 		},
 		components: {}
