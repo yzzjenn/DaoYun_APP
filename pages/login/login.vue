@@ -11,74 +11,80 @@
 		</view>
 		<!-- 登录具体页面 -->
 		<view class="codeLogin" v-show="index===0">
-			<view class="phone">
-				<view class="top">
-					<view class="left">
-						<uni-icons type="phone" size="20"></uni-icons>
-					</view>
-					<view class="right">
-						<text>手机号</text>
-					</view>
-				</view>
-				<view class="bottom">
-					<input type="text" placeholder="仅支持大陆手机号">
-				</view>
-			</view>
-			<view class="email">
-				<view class="emailLeft">
+			<uni-forms ref="codeform" :value="FormData" validate-trigger="bind" :rules="rules">
+				<view class="phone">
 					<view class="top">
 						<view class="left">
-							<uni-icons type="email" size="20"></uni-icons>
+							<uni-icons type="phone" size="20"></uni-icons>
 						</view>
 						<view class="right">
-							<text>验证码</text>
+							<text>手机号</text>
 						</view>
 					</view>
-					<view class="bottom">
-						<input type="number">
+					<uni-forms-item name="phone" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
+						<uni-easyinput type="number" v-model="FormData.phone" placeholder="请输入手机号码"></uni-easyinput>
+					</uni-forms-item>
+				</view>
+				<view class="email">
+					<view class="emailLeft">
+						<view class="top">
+							<view class="left">
+								<uni-icons type="email" size="20"></uni-icons>
+							</view>
+							<view class="right">
+								<text>验证码</text>
+							</view>
+						</view>
+						<uni-forms-item name="code" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
+							<uni-easyinput type="number" placeholder="请输入验证码" v-model="FormData.code">
+							</uni-easyinput>
+						</uni-forms-item>
 					</view>
 				</view>
-				<view class="emailRight">
-					<button type="primary">获取验证码</button>
+				<view class="reBtn">
+					<button type="primary" style="flex: 1;" @click="getCode">获取验证码</button>
+					<button type="primary" style="flex: 1;" @click="codesubmit">登录</button>
 				</view>
-			</view>
-			<button type="primary" style="margin-top: 20px;margin-left: 50px;margin-right: 15px;"
-					@click="login()">登录</button>
+			</uni-forms>
 			<navigator url="../register/register">
 				<view class="register">
 					<text>注册新账号</text>
 				</view>
 			</navigator>
 		</view>
+
 		<view class="passwordLogin" v-show="index===1">
-			<view class="account">
-				<view class="top">
-					<view class="left">
-						<uni-icons type="person" size="20"></uni-icons>
+			<uni-forms ref="passform" :value="FormData" validate-trigger="bind" :rules="rules">
+				<view class="account">
+					<view class="top">
+						<view class="left">
+							<uni-icons type="person" size="20"></uni-icons>
+						</view>
+						<view class="right">
+							<text>账号</text>
+						</view>
 					</view>
-					<view class="right">
-						<text>账号</text>
+					<uni-forms-item name="account" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
+						<uni-easyinput type="text" placeholder="请输入手机号码" v-model="FormData.account">
+						</uni-easyinput>
+					</uni-forms-item>
+				</view>
+				<view style="margin-top: 20px;">
+					<view class="top">
+						<view class="left">
+							<uni-icons type="locked" size="20"></uni-icons>
+						</view>
+						<view class="right">
+							<text>密码</text>
+						</view>
 					</view>
+					<uni-forms-item name="password" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
+						<uni-easyinput type="text" placeholder="请输入密码" v-model="FormData.password"></uni-easyinput>
+					</uni-forms-item>
 				</view>
-				<view class="bottom">
-					<input type="text" placeholder="请输入手机号或者邮箱">
-				</view>
-			</view>
-			<view style="margin-top: 20px;">
-				<view class="top">
-					<view class="left">
-						<uni-icons type="locked" size="20"></uni-icons>
-					</view>
-					<view class="right">
-						<text>密码</text>
-					</view>
-				</view>
-				<view class="bottom">
-					<input type="text" placeholder="请输入密码">
-				</view>
-			</view>
-			<button type="primary" style="margin-top: 20px;margin-left: 50px;margin-right: 15px;"
-					@click="login()">登录</button>
+				<button type="primary" style="margin-top: 20px;margin-left: 50px;margin-right: 15px;"
+					@click="passsubmit">登录</button>
+			</uni-forms>
 			<view style="margin-left: 50px;
 						margin-right: 15px;
 						text-align: center;
@@ -94,6 +100,7 @@
 				</navigator>
 			</view>
 		</view>
+
 	</view>
 </template>
 
@@ -101,17 +108,76 @@
 	export default {
 		data() {
 			return {
-				index: 0
+				index: 0,
+				FormData: {
+					phone: '',
+					code: '',
+					account: '',
+					password: ''
+				},
+				rules: {
+					phone: {
+						rules: [{
+							required: true,
+							errorMessage: '请输入电话号码'
+						}, {
+							pattern: /^1[3456789]\d{9}$/,
+							errorMessage: '请输入正确的手机号码'
+						}]
+					},
+					code: {
+						rules: [{
+							required: true,
+							errorMessage: '请输入验证码'
+						}]
+					},
+					account: {
+						rules: [{
+							required: true,
+							errorMessage: '请输入账号'
+						},{
+							pattern: /^1[3456789]\d{9}$/,
+							errorMessage: '请输入正确的手机号码'
+						}]
+					},
+					password: {
+						rules: [{
+							required: true,
+							errorMessage: '请输入密码'
+						}, {
+							minLength: 6,
+							maxLength: 20,
+							errMessage: '密码长度在 {minLength} 到 {maxLength} 个字符',
+						}],
+						label: '密码'
+					},
+				}
 			}
 		},
 		methods: {
 			chooseMethods(methodsNumber) {
 				this.index = methodsNumber
 			},
-			login(){
-				uni.switchTab({
-					url:'../class/class'
+			codesubmit: function(e) {
+				this.$refs.codeform.submit().then(res => {
+					uni.hideLoading()
+					console.log('表单数据信息：', res);
+				}).catch(err => {
+					uni.hideLoading()
+					console.log('表单错误信息：', err);
 				})
+			},
+			passsubmit: function(e) {
+				this.$refs.passform.submit().then(res => {
+					uni.hideLoading()
+					console.log('表单数据信息：', res);
+				}).catch(err => {
+					uni.hideLoading()
+					console.log('表单错误信息：', err);
+				})
+			},
+			getCode: function() {
+
 			}
 		}
 	}
@@ -167,29 +233,36 @@
 		font-size: 16px;
 	}
 
-	.bottom {
-		margin-top: 10px;
-		margin-left: 50px;
-		margin-right: 20px;
-		border-bottom: 1px solid #555555;
-	}
-	.email{
-		margin-top:20px;
+
+	.email {
+		margin-top: 20px;
 		display: flex;
 	}
-	.emailLeft{
-		flex:4;
+
+	.emailLeft {
+		flex: 4;
 	}
-	.emailRight{
-		flex:2;
+
+	.emailRight {
+		flex: 2;
 		padding-right: 10px;
 		padding-top: 5px;
 	}
-	.register{
-		color:#007AFF;
+
+	.register {
+		color: #007AFF;
 		text-align: center;
 		line-height: 14px;
 		font-size: 14px;
 		margin-top: 10px;
+	}
+
+	.reBtn {
+		display: flex;
+	}
+
+	button {
+		border-radius: 10%;
+		margin: 10rpx;
 	}
 </style>
