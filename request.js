@@ -1,5 +1,7 @@
 const api = 'http://49.232.29.120:8000'
-function sendRequest(url, data, method, header){
+function sendRequest(url, data, method, header={
+	'Content-Type': 'application/json',
+}){
 	var promise = new Promise(function(resolve,reject){
 		uni.showLoading({
 			title:'加载中'
@@ -11,20 +13,18 @@ function sendRequest(url, data, method, header){
 			header:header,
 			success:function(res){
 				uni.hideLoading()
-				if(res.statusCode === 200){
-					resolve(res.data)
-				}else{
-					resolve(res.data)
-				}
+				resolve(res.data)
 			},
-			fail:function(res){
-				uni.HideLoading()
+			fail:function(err){
+				uni.hideLoading()
 				console.log('网络出错了')
-				reject('网络出错')
+				uni.showToast({
+					title:'接口请求失败'
+				})
+				reject(err)
 			}	
 		})	
 	})
 	return promise
 }
-
 module.exports.sendRequest = sendRequest

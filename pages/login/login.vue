@@ -21,8 +21,9 @@
 							<text>手机号</text>
 						</view>
 					</view>
-					<uni-forms-item name="phone" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
-						<uni-easyinput type="number" v-model="FormData.phone" placeholder="请输入手机号码"></uni-easyinput>
+					<uni-forms-item name="phoneNumber" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
+						<uni-easyinput type="number" v-model="FormData.phoneNumber" placeholder="请输入手机号码">
+						</uni-easyinput>
 					</uni-forms-item>
 				</view>
 				<view class="email">
@@ -98,12 +99,20 @@
 				<navigator url="../forgetPassword/forgetPassword">
 					<text style="float: right;">忘记密码</text>
 				</navigator>
-				<navigator url="../oneSign/oneSign">
-					<text>一键签到</text>
-				</navigator>
 			</view>
 		</view>
-
+		<uni-popup ref="popup400" type="dialog">
+			<uni-popup-dialog type="error" title="密码错误" content="前往忘记密码页面" :duration="2000" :before-close="true"
+				@close="close" @confirm="confirm('../forgetPassword/forgetPassword',0)"></uni-popup-dialog>
+		</uni-popup>
+		<uni-popup ref="popup404" type="dialog">
+			<uni-popup-dialog type="error" title="用户不存在" content="前往注册页面" :duration="2000" :before-close="true"
+				@close="close" @confirm="confirm('../register/register',0)"></uni-popup-dialog>
+		</uni-popup>
+	<uni-popup ref="popup" type="dialog">
+		<uni-popup-dialog type="success" title="登陆成功" content="前往主页面" :duration="2000" :before-close="true"
+			@close="close" @confirm="confirm('../class/class',1)"></uni-popup-dialog>
+	</uni-popup>
 	</view>
 </template>
 
@@ -111,15 +120,16 @@
 	export default {
 		data() {
 			return {
+				code: '',
 				index: 0,
 				FormData: {
-					phone: '',
+					phoneNumber: '',
 					code: '',
 					account: '',
 					password: ''
 				},
 				rules: {
-					phone: {
+					phoneNumber: {
 						rules: [{
 							required: true,
 							errorMessage: '请输入电话号码'
@@ -138,7 +148,7 @@
 						rules: [{
 							required: true,
 							errorMessage: '请输入账号'
-						},{
+						}, {
 							pattern: /^1[3456789]\d{9}$/,
 							errorMessage: '请输入正确的手机号码'
 						}]
@@ -163,26 +173,48 @@
 			},
 			codesubmit: function(e) {
 				this.$refs.codeform.submit().then(res => {
-					uni.hideLoading()
-					console.log('表单数据信息：', res);
+					if (this.code !== parseInt(res.code)) {
+						uni.showToast({
+							title: '验证码错误',
+							icon: 'none'
+						})
+					} else {
+						this.$refs.popup.open()
+					}
 				}).catch(err => {
 					uni.hideLoading()
 					console.log('表单错误信息：', err);
 				})
 			},
 			passsubmit: function(e) {
-				uni.switchTab({
-					url:'../class/class'
-				})
 				let that = this
 				this.$refs.passform.submit().then(res => {
-					uni.hideLoading()
-					console.log('表单数据信息：', res);
-					let phone = res.account
-					that.http.sendRequest('/mobileApp/userInfo?phone='+phone,{},'post',{
-						 'Content-Type':  'application/json',
-					}).then(function(res){
-						console.log(res)
+					const passData = {
+						username: res.account,
+						password: res.password
+					}
+					that.http.sendRequest('/mobileApp/login', passData, 'post').then(res => {
+						if (res.message == "登录失败,密码错误") {
+							that.$refs.popup400.open()
+						} else if (res.statusCode == 404 || res.status == 500) {
+							that.$refs.popup404.open()
+						} else{
+							that.$refs.popup.open()
+							let userInfo = uni.getStorage({
+								key: 'USER_KEY'
+							})
+							userInfo['phone'] = passData.username
+							that.http.sendRequest('/mobileApp/userInfo?phone=' + passData.username, {},
+								'get').then(res => {
+								uni.hideLoading()
+								userInfo = res
+								userInfo['isLogined'] = true
+								uni.setStorage({
+									key: 'USER_KEY',
+									data: userInfo
+								})
+							})
+						}
 					})
 				}).catch(err => {
 					uni.hideLoading()
@@ -190,9 +222,28 @@
 				})
 			},
 			getCode: function() {
-
-			}
-		}
+				this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData.phoneNumber, {}, 'post').then(
+					res => {
+						console.log(res)
+						this.code = res
+					})
+			},
+			close: function(done) {
+				done()
+			},
+			confirm: function(url,index) {
+				if(index === 0){
+					uni.navigateTo({
+						url: url
+					})
+				}else{
+					uni.switchTab({
+						url:url
+					})
+				}
+				
+			},
+		},
 	}
 </script>
 
