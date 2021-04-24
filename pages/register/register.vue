@@ -1,5 +1,8 @@
 <template>
 	<view class="register">
+		<view class="header">
+			<image src="../../static/icon/logo.png" ></image>
+		</view>
 		<uni-forms ref="form" :value="formData" validate-trigger="bind" :rules="rules">
 			<swiper :current="current" disable-touch="true">
 				<swiper-item class="first">
@@ -17,8 +20,8 @@
 						<uni-easyinput type="number" v-model="formData.code" placeholder="请输入验证码"></uni-easyinput>
 					</uni-forms-item>
 					<view class="reBtn">
-						<button type="primary" style="flex: 1;" @click="getCode" size="mini">获取验证码</button>
-						<button type="primary" style="flex: 1;" @click="next" size="mini">下一步</button>
+						<button type="primary" style="flex: 1;" @click="getCode" size="mini" class="button-login">{{time ==0 ?'获取验证码':time+'s后获取'}}</button>
+						<button type="primary" style="flex: 1;" @click="next" size="mini" class="button-login">下一步</button>
 					</view>
 				</swiper-item>
 				<swiper-item>
@@ -47,14 +50,19 @@
 						</uni-data-picker>
 					</uni-forms-item>
 					<view class="reBtn">
-						<button type="primary" @click="previous" style="flex: 1;" size="mini">上一步</button>
-						<button type="primary" @click="submit" style="flex: 1;" size="mini">注册</button>
+						<button type="primary" @click="previous" style="flex: 1;" size="mini" class="button-login">上一步</button>
+						<button type="primary" @click="submit" style="flex: 1;" size="mini" class="button-login">注册</button>
 					</view>
 				</swiper-item>
 			</swiper>
 			<uni-popup ref="popup" type="dialog">
 				<uni-popup-dialog type="success" title="注册成功" content="前往登录页面"
-				:duration="2000" :before-close="true" @close="close"@confirm="confirm">
+				:duration="2000" :before-close="true" @close="close"@confirm="confirm(0)">
+				</uni-popup-dialog>
+			</uni-popup>
+			<uni-popup ref="popupErr" type="dialog">
+				<uni-popup-dialog type="error" title="提示" content="手机号已注册"
+				:duration="2000" :before-close="true" @close="close"@confirm="confirm(1)">
 				</uni-popup-dialog>
 			</uni-popup>
 		</uni-forms>
@@ -65,7 +73,9 @@
 	export default {
 		data() {
 			return {
+				time:0,
 				school: [],
+				code:1111,
 				scoCheckedText: '',
 				depCheckedText: '',
 				current: 0,
@@ -213,10 +223,7 @@
 			this.$refs.form.setRules(this.rules)
 		},
 		created: function() {
-			this.http.sendRequest('/mobileApp/college', {}, 'get', {
-				'Content-Type': 'application/json',
-			}).then(res => {
-				console.log(res)
+			this.http.sendRequest2('/mobileApp/college',{},'get').then(res=>{
 				for (let i = 0; i < res.length; i++) {
 					let tmp = {
 						value: res[i].id,
@@ -235,9 +242,7 @@
 					}
 					this.school.push(tmp)
 				}
-				console.log(this.school)
 			})
-
 		},
 		methods: {
 			submit: function(e) {
@@ -299,10 +304,40 @@
 				this.formData.college.id = e.detail.value[1].value
 			},
 			getCode: function() {
-				
+				if(this.time !== 0){
+					uni.showToast({
+						title:'请'+this.time+'s后再重新获取'
+					})
+				}
+				this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
+					console.log(res)
+					if (res.statusCode === 200){
+						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
+							res => {
+								this.code = res.data
+							})
+					}else{
+						this.$refs.popupErr.open()
+					}
+				})
+				const that = this
+				that.time = 60
+				const fn = setInterval(function(){
+					that.time --
+					if(that.time == 0){
+						clearInterval(fn)
+					}
+				},1000)
 			},
 			next: function() {
-				this.current++
+				if(this.code === parseInt(this.formData.code)){
+					this.current++
+				}else{
+					uni.showToast({
+						title:'验证码输入错误',
+						icon:'none'
+					})
+				}		
 			},
 			previous: function() {
 				this.current--
@@ -310,10 +345,14 @@
 			close(done) {
 				done()
 			},
-			confirm(done, value) {
-				uni.navigateTo({
-					url:'../login/login'
-				})
+			confirm(index) {
+				if(index === 0){
+					uni.navigateTo({
+						url:'../login/login'
+					})
+				}else{
+					console.log('重新输入手机号')
+				}				
 			}
 		},
 		components: {}
@@ -321,8 +360,27 @@
 </script>
 
 <style>
+	.header {
+	  width: 161rpx;
+	  height: 161rpx;
+	  background: rgba(63, 205, 235, 1);
+	  box-shadow: 0rpx 12rpx 13rpx 0rpx rgba(63, 205, 235, 0.47);
+	  border-radius: 50%;
+	  margin-top: 30rpx;
+	  margin-left: auto;
+	  margin-right: auto;
+	  margin-bottom:30rpx;
+	}
+	
+	.header image {
+	  width: 161rpx;
+	  height: 161rpx;
+	  border-radius: 50%;
+	}
+	
 	.register {
-		padding: 40rpx;
+		padding-left: 40rpx;
+		padding-right: 40rpx;
 	}
 
 	.reBtn {
@@ -335,5 +393,13 @@
 
 	swiper {
 		height: 500px;
+	}
+	
+	.button-login{
+		background: linear-gradient(-90deg, rgba(63, 205, 235, 1), rgba(188, 226, 158, 1));
+		box-shadow: 0rpx 0rpx 13rpx 0rpx rgba(164, 217, 228, 0.2);
+	}
+	.button-hover {
+	  background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
 	}
 </style>

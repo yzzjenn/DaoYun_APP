@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view style="justify-content: center;">
 		<!-- 登录方式导航 -->
 		<view class="methods">
 			<view class="code" @click="chooseMethods(0)" :class="index===0?'activeMethods':''">
@@ -9,97 +9,98 @@
 				<text>密码登录</text>
 			</view>
 		</view>
-		<!-- 登录具体页面 -->
-		<view class="codeLogin" v-show="index===0">
-			<uni-forms ref="codeform" :value="FormData" validate-trigger="bind" :rules="rules">
-				<view class="phone">
-					<view class="top">
-						<view class="left">
-							<uni-icons type="phone" size="20"></uni-icons>
-						</view>
-						<view class="right">
-							<text>手机号</text>
-						</view>
-					</view>
-					<uni-forms-item name="phoneNumber" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
-						<uni-easyinput type="number" v-model="FormData.phoneNumber" placeholder="请输入手机号码">
-						</uni-easyinput>
-					</uni-forms-item>
-				</view>
-				<view class="email">
-					<view class="emailLeft">
+		<view class="main">
+			<view class="codeLogin" v-show="index===0">
+				<uni-forms ref="codeform" :value="FormData" validate-trigger="bind" :rules="rules">
+					<view class="phone">
 						<view class="top">
 							<view class="left">
-								<uni-icons type="email" size="20"></uni-icons>
+								<uni-icons type="phone" size="20"></uni-icons>
 							</view>
 							<view class="right">
-								<text>验证码</text>
+								<text>手机号</text>
 							</view>
 						</view>
-						<uni-forms-item name="code" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
-							<uni-easyinput type="number" placeholder="请输入验证码" v-model="FormData.code">
+						<uni-forms-item name="phoneNumber" style="margin-top: 10px;">
+							<uni-easyinput type="number" v-model="FormData.phoneNumber" placeholder="请输入手机号码">
 							</uni-easyinput>
 						</uni-forms-item>
 					</view>
-				</view>
-				<view class="reBtn">
-					<button type="primary" style="flex: 1;" @click="getCode">获取验证码</button>
-					<button type="primary" style="flex: 1;" @click="codesubmit">登录</button>
-				</view>
-			</uni-forms>
-			<navigator url="../register/register">
-				<view class="register">
-					<text>注册新账号</text>
-				</view>
-			</navigator>
-		</view>
-
-		<view class="passwordLogin" v-show="index===1">
-			<uni-forms ref="passform" :value="FormData" validate-trigger="bind" :rules="rules">
-				<view class="account">
-					<view class="top">
-						<view class="left">
-							<uni-icons type="person" size="20"></uni-icons>
-						</view>
-						<view class="right">
-							<text>账号</text>
+					<view class="email">
+						<view class="emailLeft">
+							<view class="top" >
+								<view class="left">
+									<uni-icons type="email" size="20"></uni-icons>
+								</view>
+								<view class="right">
+									<text>验证码</text>
+								</view>
+								<button type="primary" size="mini" 
+									style="position: absolute;right:0;bottom: 1px;margin: 0;"
+									@click="getCode" class="button-login">
+									{{time ==0 ?'获取验证码':time+'s后获取'}}
+								</button>
+							</view>
+							<uni-forms-item name="code" style="margin-top: 10px;">
+								<uni-easyinput type="number" placeholder="请输入验证码" v-model="FormData.code">
+								</uni-easyinput>
+							</uni-forms-item>
 						</view>
 					</view>
-					<uni-forms-item name="account" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
-						<uni-easyinput type="text" placeholder="请输入手机号码" v-model="FormData.account">
-						</uni-easyinput>
-					</uni-forms-item>
-				</view>
-				<view style="margin-top: 20px;">
-					<view class="top">
-						<view class="left">
-							<uni-icons type="locked" size="20"></uni-icons>
-						</view>
-						<view class="right">
-							<text>密码</text>
-						</view>
+					<view class="reBtn">
+						<button type="primary" style="flex: 1;" @click="codesubmit" class="button-login" hover-class="button-hover">登录</button>
 					</view>
-					<uni-forms-item name="password" style="margin-top: 10px;margin-left: 50px;margin-right: 20px;">
-						<uni-easyinput type="text" placeholder="请输入密码" v-model="FormData.password"></uni-easyinput>
-					</uni-forms-item>
-				</view>
-				<button type="primary" style="margin-top: 20px;margin-left: 50px;margin-right: 15px;"
-					@click="passsubmit">登录</button>
-			</uni-forms>
-			<view style="margin-left: 50px;
-						margin-right: 15px;
-						text-align: center;
-						font-size: 14px;
-						margin-top: 20px;
-						line-height: 14px;
-						color: #007AFF;">
-				<navigator url="../register/register">
-					<text style="float: left;">注册新账号</text>
-				</navigator>
-				<navigator url="../forgetPassword/forgetPassword">
-					<text style="float: right;">忘记密码</text>
-				</navigator>
+				</uni-forms>
 			</view>
+			<view class="passwordLogin" v-show="index===1">
+				<uni-forms ref="passform" :value="FormData" validate-trigger="bind" :rules="rules">
+					<view class="account">
+						<view class="top">
+							<view class="left">
+								<uni-icons type="person" size="20"></uni-icons>
+							</view>
+							<view class="right">
+								<text>账号</text>
+							</view>
+						</view>
+						<uni-forms-item name="account" style="margin-top: 10px;">
+							<uni-easyinput type="text" placeholder="请输入手机号码" v-model="FormData.account">
+							</uni-easyinput>
+						</uni-forms-item>
+					</view>
+					<view style="margin-top: 20px;">
+						<view class="top">
+							<view class="left">
+								<uni-icons type="locked" size="20"></uni-icons>
+							</view>
+							<view class="right">
+								<text>密码</text>
+							</view>
+						</view>
+						<uni-forms-item name="password">
+							<uni-easyinput type="password" placeholder="请输入密码" v-model="FormData.password"></uni-easyinput>
+						</uni-forms-item>
+					</view>
+					<button class="button-login" hover-class="button-hover" type="primary" style="margin-top: 20px;" @click="passsubmit">登录</button>
+				</uni-forms>
+			</view>
+		</view>
+	
+		<view class="other_login cuIcon">
+			<view class="login_icon">
+				<view class="cuIcon-weixin" @tap="login"></view>
+			</view>
+			<view class="login_icon">
+				<view class="cuIcon-weibo" @tap="login"></view>
+			</view>
+			<view class="login_icon">
+				<view class="cuIcon-github" @tap="login"></view>
+			</view>
+		</view>
+		<view class="footer">
+			<navigator url="../forgetPassword/forgetPassword" open-type="navigate">找回密码</navigator>
+			<text>|</text>
+			<navigator url="../register/register" open-type="navigate">注册账号</navigator>
 		</view>
 		<uni-popup ref="popup400" type="dialog">
 			<uni-popup-dialog type="error" title="密码错误" content="前往忘记密码页面" :duration="2000" :before-close="true"
@@ -109,10 +110,10 @@
 			<uni-popup-dialog type="error" title="用户不存在" content="前往注册页面" :duration="2000" :before-close="true"
 				@close="close" @confirm="confirm('../register/register',0)"></uni-popup-dialog>
 		</uni-popup>
-	<uni-popup ref="popup" type="dialog">
-		<uni-popup-dialog type="success" title="登陆成功" content="前往主页面" :duration="2000" :before-close="true"
-			@close="close" @confirm="confirm('../class/class',1)"></uni-popup-dialog>
-	</uni-popup>
+		<uni-popup ref="popup" type="dialog">
+			<uni-popup-dialog type="success" title="登陆成功" content="前往主页面" :duration="2000" :before-close="true"
+				@close="close" @confirm="confirm('../class/class',1)"></uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
@@ -120,6 +121,7 @@
 	export default {
 		data() {
 			return {
+				time:0,
 				code: '',
 				index: 0,
 				FormData: {
@@ -194,11 +196,12 @@
 						password: res.password
 					}
 					that.http.sendRequest('/mobileApp/login', passData, 'post').then(res => {
-						if (res.message == "登录失败,密码错误") {
+						console.log(res)
+						if (res.data.message == '登录失败,密码错误') {
 							that.$refs.popup400.open()
-						} else if (res.statusCode == 404 || res.status == 500) {
+						} else if (res.statusCode === 500) {
 							that.$refs.popup404.open()
-						} else{
+						} else {
 							that.$refs.popup.open()
 							let userInfo = uni.getStorage({
 								key: 'USER_KEY'
@@ -207,7 +210,7 @@
 							that.http.sendRequest('/mobileApp/userInfo?phone=' + passData.username, {},
 								'get').then(res => {
 								uni.hideLoading()
-								userInfo = res
+								userInfo = res.data
 								userInfo['isLogined'] = true
 								uni.setStorage({
 									key: 'USER_KEY',
@@ -222,36 +225,64 @@
 				})
 			},
 			getCode: function() {
+				if(this.time !== 0){
+					uni.showToast({
+						title:'请'+this.time+'s后再重新获取'
+					})
+				}
 				this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData.phoneNumber, {}, 'post').then(
 					res => {
 						console.log(res)
-						this.code = res
+						this.code = res.data
 					})
+				const that = this
+				that.time = 60
+				const fn = setInterval(function(){
+					that.time --
+					if(that.time == 0){
+						clearInterval(fn)
+					}
+				},1000)
 			},
 			close: function(done) {
 				done()
 			},
-			confirm: function(url,index) {
-				if(index === 0){
+			confirm: function(url, index) {
+				if (index === 0) {
 					uni.navigateTo({
 						url: url
 					})
-				}else{
+				} else {
 					uni.switchTab({
-						url:url
+						url: url
 					})
 				}
-				
+
 			},
+			login() {
+				//微信登录
+				uni.showToast({
+					icon: 'none',
+					position: 'bottom',
+					title: '开发中...'
+				});
+			}
 		},
 	}
 </script>
 
 <style>
+	@import url("../../common/css/icon.css");
+
 	.methods {
 		width: 100%;
 		height: 100px;
 		display: flex;
+	}
+
+	.main {
+		padding-left: 70rpx;
+		padding-right: 70rpx;
 	}
 
 	.code {
@@ -283,7 +314,7 @@
 
 	.top {
 		display: flex;
-		padding-left: 50px;
+		position: relative;
 
 	}
 
@@ -326,7 +357,61 @@
 	}
 
 	button {
-		border-radius: 10%;
 		margin: 10rpx;
 	}
+
+	.other_login {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top: 256rpx;
+		text-align: center;
+	}
+
+	.login_icon {
+		border: none;
+		font-size: 64rpx;
+		margin: 0 64rpx 0 64rpx;
+		color: rgba(0, 0, 0, 0.7)
+	}
+
+	.wechat_color {
+		color: #83DC42;
+	}
+
+	.weibo_color {
+		color: #F9221D;
+	}
+
+	.github_color {
+		color: #24292E;
+	}
+
+	.footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		font-size: 28rpx;
+		margin-top: 64rpx;
+		color: rgba(0, 0, 0, 0.7);
+		text-align: center;
+		height: 40rpx;
+		line-height: 40rpx;
+	}
+
+	.footer text {
+		font-size: 24rpx;
+		margin-left: 15rpx;
+		margin-right: 15rpx;
+	}
+	.button-login{
+		background: linear-gradient(-90deg, rgba(63, 205, 235, 1), rgba(188, 226, 158, 1));
+		box-shadow: 0rpx 0rpx 13rpx 0rpx rgba(164, 217, 228, 0.2);
+	}
+	.button-hover {
+	  background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
+	}
+	
 </style>
