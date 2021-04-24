@@ -57,14 +57,14 @@
 			</swiper>
 			<uni-popup ref="popup" type="dialog">
 				<uni-popup-dialog type="success" title="注册成功" content="前往登录页面"
-				:duration="2000" :before-close="true" @close="close"@confirm="confirm(0)">
+				:duration="2000" :before-close="true" @close="close"@confirm="confirm">
 				</uni-popup-dialog>
 			</uni-popup>
-			<uni-popup ref="popupErr" type="dialog">
-				<uni-popup-dialog type="error" title="提示" content="手机号已注册"
-				:duration="2000" :before-close="true" @close="close"@confirm="confirm(1)">
+			<!-- <uni-popup ref="popupErr" type="dialog">
+				<uni-popup-dialog type="input" title="提示" content="手机号已注册,请重新输入手机号"
+				:duration="2000"  @close="close"@confirm="confirm">
 				</uni-popup-dialog>
-			</uni-popup>
+			</uni-popup> -->
 		</uni-forms>
 	</view>
 </template>
@@ -312,12 +312,15 @@
 				this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
 					console.log(res)
 					if (res.statusCode === 200){
+						uni.showToast({
+							title:'手机号已注册',
+							icon:'none'
+						})
+					}else{
 						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
 							res => {
 								this.code = res.data
 							})
-					}else{
-						this.$refs.popupErr.open()
 					}
 				})
 				const that = this
@@ -345,14 +348,12 @@
 			close(done) {
 				done()
 			},
-			confirm(index) {
-				if(index === 0){
+			confirm() {
+				
 					uni.navigateTo({
 						url:'../login/login'
 					})
-				}else{
-					console.log('重新输入手机号')
-				}				
+					
 			}
 		},
 		components: {}

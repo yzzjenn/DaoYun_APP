@@ -28,16 +28,16 @@
 					</view>
 					<view class="email">
 						<view class="emailLeft">
-							<view class="top" >
+							<view class="top">
 								<view class="left">
 									<uni-icons type="email" size="20"></uni-icons>
 								</view>
 								<view class="right">
 									<text>验证码</text>
 								</view>
-								<button type="primary" size="mini" 
-									style="position: absolute;right:0;bottom: 1px;margin: 0;"
-									@click="getCode" class="button-login">
+								<button type="primary" size="mini"
+									style="position: absolute;right:0;bottom: 1px;margin: 0;" @click="getCode"
+									class="button-login">
 									{{time ==0 ?'获取验证码':time+'s后获取'}}
 								</button>
 							</view>
@@ -48,7 +48,8 @@
 						</view>
 					</view>
 					<view class="reBtn">
-						<button type="primary" style="flex: 1;" @click="codesubmit" class="button-login" hover-class="button-hover">登录</button>
+						<button type="primary" style="flex: 1;" @click="codesubmit" class="button-login"
+							hover-class="button-hover">登录</button>
 					</view>
 				</uni-forms>
 			</view>
@@ -78,14 +79,16 @@
 							</view>
 						</view>
 						<uni-forms-item name="password">
-							<uni-easyinput type="password" placeholder="请输入密码" v-model="FormData.password"></uni-easyinput>
+							<uni-easyinput type="password" placeholder="请输入密码" v-model="FormData.password">
+							</uni-easyinput>
 						</uni-forms-item>
 					</view>
-					<button class="button-login" hover-class="button-hover" type="primary" style="margin-top: 20px;" @click="passsubmit">登录</button>
+					<button class="button-login" hover-class="button-hover" type="primary" style="margin-top: 20px;"
+						@click="passsubmit">登录</button>
 				</uni-forms>
 			</view>
 		</view>
-	
+
 		<view class="other_login cuIcon">
 			<view class="login_icon">
 				<view class="cuIcon-weixin" @tap="login"></view>
@@ -121,7 +124,7 @@
 	export default {
 		data() {
 			return {
-				time:0,
+				time: 0,
 				code: '',
 				index: 0,
 				FormData: {
@@ -225,24 +228,33 @@
 				})
 			},
 			getCode: function() {
-				if(this.time !== 0){
+				if (this.time !== 0) {
 					uni.showToast({
-						title:'请'+this.time+'s后再重新获取'
+						title: '请' + this.time + 's后再重新获取'
 					})
 				}
-				this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData.phoneNumber, {}, 'post').then(
-					res => {
-						console.log(res)
-						this.code = res.data
-					})
+				this.http.sendRequest('/mobileApp/check?phone=' + this.FormData.phoneNumber, {}, 'get').then(res => {
+					console.log(res)
+					if (res.statusCode === 200) {
+						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData.phoneNumber, {}, 'post').then(
+							res => {
+								this.code = res.data
+							})
+					} else {
+						uni.showToast({
+							title: '手机号未注册',
+							icon: 'none'
+						})
+					}
+				})
 				const that = this
 				that.time = 60
-				const fn = setInterval(function(){
-					that.time --
-					if(that.time == 0){
+				const fn = setInterval(function() {
+					that.time--
+					if (that.time == 0) {
 						clearInterval(fn)
 					}
-				},1000)
+				}, 1000)
 			},
 			close: function(done) {
 				done()
@@ -406,12 +418,13 @@
 		margin-left: 15rpx;
 		margin-right: 15rpx;
 	}
-	.button-login{
+
+	.button-login {
 		background: linear-gradient(-90deg, rgba(63, 205, 235, 1), rgba(188, 226, 158, 1));
 		box-shadow: 0rpx 0rpx 13rpx 0rpx rgba(164, 217, 228, 0.2);
 	}
+
 	.button-hover {
-	  background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
+		background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
 	}
-	
 </style>
