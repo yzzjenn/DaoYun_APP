@@ -10,7 +10,7 @@
 
 <script>
 	import PatternLock from 'patternlock';
-	import 'patternlock/dist/patternlock.css';
+	
 	export default {
 		data() {
 			return {

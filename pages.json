@@ -162,6 +162,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/quickRegister/quickRegister",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "快速注册",
+                "enablePullDownRefresh": false,
+				"navigationBarBackgroundColor":"#1B82D2",
+				"navigationBarTextStyle":"white"		
+            }    
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
