@@ -91,7 +91,7 @@
 
 		<view class="other_login cuIcon">
 			<view class="login_icon">
-				<view class="cuIcon-weixin" @tap="login"></view>
+				<view class="cuIcon-weixin" @tap="login" open-type="getUserInfo"></view>
 			</view>
 			<view class="login_icon">
 				<view class="cuIcon-weibo" @tap="login"></view>
@@ -104,6 +104,8 @@
 			<navigator url="../forgetPassword/forgetPassword" open-type="navigate">找回密码</navigator>
 			<text>|</text>
 			<navigator url="../register/register" open-type="navigate">注册账号</navigator>
+			<text>|</text>
+			<navigator url="../quickRegister/quickRegister" open-type="navigate">快速注册</navigator>
 		</view>
 		<uni-popup ref="popup400" type="dialog">
 			<uni-popup-dialog type="error" title="密码错误" content="前往忘记密码页面" :duration="2000" :before-close="true"
@@ -232,11 +234,12 @@
 					uni.showToast({
 						title: '请' + this.time + 's后再重新获取'
 					})
+					return
 				}
 				this.http.sendRequest('/mobileApp/check?phone=' + this.FormData.phoneNumber, {}, 'get').then(res => {
-					console.log(res)
 					if (res.statusCode === 200) {
-						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData.phoneNumber, {}, 'post').then(
+						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.FormData
+							.phoneNumber, {}, 'post').then(
 							res => {
 								this.code = res.data
 							})
@@ -276,8 +279,30 @@
 				uni.showToast({
 					icon: 'none',
 					position: 'bottom',
-					title: '开发中...'
+					title: '微信的公路'
 				});
+				uni.login({
+					provider: 'weixin',
+					success: (loginreq) => {
+						console.log("loginreq:" + JSON.stringify(loginreq))
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: (successreq) => { //拿到微信的信息   头像 昵称 等  
+								console.log("successreq" + JSON.stringify(successreq))
+								uni.setStorage({
+									key:'UserInfo',
+									data:successreq.userInfo
+								})
+								setTimeout(function(){
+									uni.switchTab({
+										url:'../class/class'
+									})
+								},2000)
+							}
+						})
+					}
+				})
+
 			}
 		},
 	}

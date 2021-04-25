@@ -46,7 +46,13 @@
             "ios" : {},
             /* SDK配置 */
             "sdkConfigs" : {
-                "oauth" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "123",
+                        "appsecret" : "123",
+                        "UniversalLinks" : ""
+                    }
+                },
                 "ad" : {}
             }
         }

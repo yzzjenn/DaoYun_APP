@@ -315,6 +315,7 @@
 						uni.showToast({
 							title:'请'+this.time+'s后再重新获取'
 						})
+						return 
 					}
 					this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
 						console.log(res)
@@ -410,5 +411,24 @@
 	}
 	.button-hover {
 	  background: linear-gradient(-90deg, rgba(63, 205, 235, 0.8), rgba(188, 226, 158, 0.8));
+	}
+	
+	.footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		font-size: 28rpx;
+		margin-top: 64rpx;
+		color: rgba(0, 0, 0, 0.7);
+		text-align: center;
+		height: 40rpx;
+		line-height: 40rpx;
+	}
+	
+	.footer text {
+		font-size: 24rpx;
+		margin-left: 15rpx;
+		margin-right: 15rpx;
 	}
 </style>

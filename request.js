@@ -1,11 +1,11 @@
-const api = 'http://49.232.29.120:8000'
+const api = 'http://192.168.43.153:8000'
 function sendRequest(url, data, method, header={
 	'Content-Type': 'application/json',
 }){
 	var promise = new Promise(function(resolve,reject){
-		uni.showLoading({
-			title:'加载中'
-		})
+		// uni.showLoading({
+		// 	title:'加载中'
+		// })
 		uni.request({
 			url:api+url,
 			method:method,
@@ -31,9 +31,9 @@ function sendRequest2(url, data, method, header={
 	'Content-Type': 'application/json',
 }){
 	var promise = new Promise(function(resolve,reject){
-		uni.showLoading({
-			title:'加载中'
-		})
+		// uni.showLoading({
+		// 	title:'加载中'
+		// })
 		uni.request({
 			url:api+url,
 			method:method,
