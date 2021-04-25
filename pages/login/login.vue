@@ -38,7 +38,7 @@
 								<button type="primary" size="mini"
 									style="position: absolute;right:0;bottom: 1px;margin: 0;" @click="getCode"
 									class="button-login">
-									{{time ==0 ?'获取验证码':time+'s后获取'}}
+									{{time ==0 ?'获取验证码':'重新发送('+time+')'}}
 								</button>
 							</view>
 							<uni-forms-item name="code" style="margin-top: 10px;">

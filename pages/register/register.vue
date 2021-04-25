@@ -20,7 +20,7 @@
 						<uni-easyinput type="number" v-model="formData.code" placeholder="请输入验证码"></uni-easyinput>
 					</uni-forms-item>
 					<view class="reBtn">
-						<button type="primary" style="flex: 1;" @click="getCode" size="mini" class="button-login">{{time ==0 ?'获取验证码':time+'s后获取'}}</button>
+						<button type="primary" style="flex: 1;" @click="getCode" size="mini" class="button-login">{{time ==0 ?'获取验证码':'重新发送('+time+')'}}</button>
 						<button type="primary" style="flex: 1;" @click="next" size="mini" class="button-login">下一步</button>
 					</view>
 				</swiper-item>
@@ -223,6 +223,7 @@
 			this.$refs.form.setRules(this.rules)
 		},
 		created: function() {
+			uni.hideLoading()
 			this.http.sendRequest2('/mobileApp/college',{},'get').then(res=>{
 				for (let i = 0; i < res.length; i++) {
 					let tmp = {
@@ -304,33 +305,40 @@
 				this.formData.college.id = e.detail.value[1].value
 			},
 			getCode: function() {
-				if(this.time !== 0){
+				if(this.formData.phone === ''){
 					uni.showToast({
-						title:'请'+this.time+'s后再重新获取'
+						title:'请输入手机号',
+						icon:'none'
 					})
-				}
-				this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
-					console.log(res)
-					if (res.statusCode === 200){
+				}else{
+					if(this.time !== 0){
 						uni.showToast({
-							title:'手机号已注册',
-							icon:'none'
+							title:'请'+this.time+'s后再重新获取'
 						})
-					}else{
-						this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
-							res => {
-								this.code = res.data
+					}
+					this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
+						console.log(res)
+						if (res.statusCode === 200){
+							uni.showToast({
+								title:'手机号已注册',
+								icon:'none'
 							})
-					}
-				})
-				const that = this
-				that.time = 60
-				const fn = setInterval(function(){
-					that.time --
-					if(that.time == 0){
-						clearInterval(fn)
-					}
-				},1000)
+						}else{
+							this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
+								res => {
+									this.code = res.data
+								})
+						}
+					})
+					const that = this
+					that.time = 60
+					const fn = setInterval(function(){
+						that.time --
+						if(that.time == 0){
+							clearInterval(fn)
+						}
+					},1000)
+				}
 			},
 			next: function() {
 				if(this.code === parseInt(this.formData.code)){
