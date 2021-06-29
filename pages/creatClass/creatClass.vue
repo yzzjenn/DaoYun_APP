@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-nav-bar  :title="status === '教师'?'创建班课':'加入班课'" backgroundColor="#1B82D2" color="white"></uni-nav-bar>
+		<uni-nav-bar :title="status === '教师'?'创建班课':'加入班课'" backgroundColor="#1B82D2" color="white"></uni-nav-bar>
 		<view v-if="status === '教师'" class="forget-bg">
 			<uni-forms ref="form" :value="formData" class="forget-card">
 				<uni-forms-item label="课程名称" name="courseName" class="forget-input forget-margin-b">
@@ -29,13 +29,10 @@
 			</uni-popup>
 		</view>
 		<view class="joinclass" v-if="status ==='学生'">
-			<view>
-				<uni-easyinput type="number" 
-				placeholder="请输入班课号" 
-				v-model="courseCode"  
-				suffixIcon="search" 
-				@iconClick="check" 
-				style="transform: scale(0.9);"></uni-easyinput>
+			<view style="display: flex;">
+				<uni-easyinput type="number" placeholder="请输入班课号" v-model="courseCode" style="transform: scale(0.9);">
+				</uni-easyinput>
+				<uni-icons type="search" @click="check" size="30"></uni-icons>
 			</view>
 			<uni-card title="班课信息" is-shadow="true" note="true" v-show="info">
 				<uni-list>
@@ -109,7 +106,7 @@
 				courseInfo: {
 					college: {}
 				},
-				info:false
+				info: false
 			}
 		},
 		onShow() {
@@ -122,7 +119,7 @@
 				}
 			})
 		},
-		onHide(){
+		onHide() {
 			console.log('消失了')
 			this.info = false
 			this.courseCode = ''
@@ -174,6 +171,46 @@
 				this.formData.college.id = e.detail.value[1].value
 			},
 			submit: function() {
+				if (this.formData.courseName == '') {
+					uni.showToast({
+						title: '请输入班课名称',
+						duration: 3000,
+						icon: 'none'
+					})
+					return
+				}
+				if (this.formData.className == '') {
+					uni.showToast({
+						title: '请输入班级',
+						duration: 3000,
+						icon: 'none'
+					})
+					return
+				}
+				if (this.formData.semester == '') {
+					uni.showToast({
+						title: '请选择学期',
+						duration: 3000,
+						icon: 'none'
+					})
+					return
+				}
+				if (this.scoCheckedText == '') {
+					uni.showToast({
+						title: '请选择学校',
+						duration: 3000,
+						icon: 'none'
+					})
+					return
+				}
+				if (this.depCheckedText == '') {
+					uni.showToast({
+						title: '请选择院系',
+						duration: 3000,
+						icon: 'none'
+					})
+					return
+				}
 				let that = this
 				const user = uni.getStorage({
 					key: 'user',
@@ -191,13 +228,13 @@
 			},
 			confirm: function(done) {
 				uni.switchTab({
-					url:'../class/class'
-				})	
+					url: '../class/class'
+				})
 				this.courseCode = ''
-				this.courseInfo={
+				this.courseInfo = {
 					college: {}
 				}
-				this.info=false
+				this.info = false
 				done()
 			},
 			joinClass: function() {
@@ -236,9 +273,10 @@
 		padding-top: 100rpx;
 	}
 
-.uni-card__content--pd{
-	padding:0 12px 12px 12px !important;
-}
+	.uni-card__content--pd {
+		padding: 0 12px 12px 12px !important;
+	}
+
 	button {
 		width: 580rpx;
 		height: 100rpx;
