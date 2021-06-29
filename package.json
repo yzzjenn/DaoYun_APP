@@ -1,0 +1,28 @@
+{
+  "name": "DaoYun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yzzjenn/DaoYun_APP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yzzjenn/DaoYun_APP/issues"
+  },
+  "homepage": "https://github.com/yzzjenn/DaoYun_APP#readme",
+  "dependencies": {
+    "@dcloudio/uni-ui": "^1.2.12",
+    "patternlock": "^2.0.2",
+    "qrcode": "^1.4.4",
+    "qrcodejs2": "0.0.2",
+    "tki-qrcode": "^0.1.6",
+    "vuex": "^3.6.2"
+  }
+}
