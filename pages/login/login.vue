@@ -1,5 +1,6 @@
 <template>
 	<view style="justify-content: center;">
+		<uni-nav-bar  title="登录" backgroundColor="#1B82D2" color="white"></uni-nav-bar>
 		<!-- 登录方式导航 -->
 		<view class="methods">
 			<view class="code" @click="chooseMethods(0)" :class="index===0?'activeMethods':''">
@@ -123,7 +124,13 @@
 </template>
 
 <script>
+	import uniIcons from '../../components/uni-icons/uni-icons.vue'
+	import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
 	export default {
+		components:{
+			uniIcons,
+			uniNavBar
+		},
 		data() {
 			return {
 				time: 0,
@@ -186,6 +193,16 @@
 							icon: 'none'
 						})
 					} else {
+						this.http.sendRequest('/mobileApp/userInfo?phone=' + this.FormData.phoneNumber, {},
+							'get').then(res => {
+							uni.hideLoading()
+							const userInfo = res.data
+							userInfo['isLogined'] = true
+							uni.setStorage({
+								key: 'user',
+								data: userInfo
+							})
+						})
 						this.$refs.popup.open()
 					}
 				}).catch(err => {
@@ -208,17 +225,13 @@
 							that.$refs.popup404.open()
 						} else {
 							that.$refs.popup.open()
-							let userInfo = uni.getStorage({
-								key: 'USER_KEY'
-							})
-							userInfo['phone'] = passData.username
-							that.http.sendRequest('/mobileApp/userInfo?phone=' + passData.username, {},
+							that.http.sendRequest('/mobileApp/userInfo?phone=' + this.FormData.account, {},
 								'get').then(res => {
 								uni.hideLoading()
-								userInfo = res.data
+								const userInfo = res.data
 								userInfo['isLogined'] = true
 								uni.setStorage({
-									key: 'USER_KEY',
+									key: 'user',
 									data: userInfo
 								})
 							})

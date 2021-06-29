@@ -52,15 +52,9 @@
 					email: '',
 					studentNumber: '',
 					status: '',
-					dept: {
-						id: 8
-					},
-					school: {
-						id: 8
-					},
+					dept: {id:16},
 					college: {
-						id: 8
-					},
+						id:17},
 					type: 3
 				},
 			};
@@ -126,14 +120,11 @@
 					studentNumber: '',
 					status: 'student',
 					email: '',
-					school: {
-						id:8
-					},
 					college:{
-						id:8
+						id:16
 					} ,
 					dept: {
-						id:8
+						id:17
 					},
 					type: 3
 				}

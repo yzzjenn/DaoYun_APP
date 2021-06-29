@@ -1,6 +1,6 @@
 <template>
 	<view class="oneSign">
-		<button @click="oneSign">开始签到</button>
+		<button @click="oneSign" :disabled="sign">{{text}}</button>
 	</view>
 </template>
 
@@ -8,18 +8,64 @@
 	export default {
 		data() {
 			return {
-
+				password: '123456',
+				courseId: Number,
+				user_id: Number,
+				sign: false,
+				text: '',
+				signType: Number,
+				during_time: Number
 			}
 		},
+		onLoad: function(option) {
+			console.log(option)
+			this.courseId = option.courseId
+			this.signType = option.signType
+			this.during_time = option.during_time
+			if (option.signType === "0") {
+				this.text = "开始签到"
+			} else {
+				let timer = setInterval(() => {
+					this.during_time--
+					if (this.during_time === 0) {
+						this.sign=true
+						clearInterval(timer)
+					}
+					this.text=this.during_time+'s后签到结束'
+				}, 1000)	
+			}
+			let that = this
+			uni.getStorage({
+				key: 'user',
+				success: function(res) {
+					that.user_id = res.data.id
+				}
+			})
+		},
 		methods: {
-			oneSign:function(){
-				uni.getLocation({
-					  type: 'wgs84',
-					  success:function(res){
-					   console.log('当前位置的经度：' + res.longitude);
-					   console.log('当前位置的纬度：' + res.latitude);
-					  }
+			oneSign: function() {
+				const that = this
+				let api = '/mobileApp/sign/student?courseId=' + that.courseId + '&code=' + that.password +
+					'&studentId=' + that.user_id
+				that.http.sendRequest3(api, {}, 'get').then(res => {
+					console.log(res)
+					if (res.statusCode === 200) {
+						that.sign = true
+						that.text = '签到成功'
+						uni.showToast({
+							title: "签到成功",
+							duration: 3000
+						})
+					} else {
+						that.text = "重新签到"
+						uni.showToast({
+							title: "签到失败",
+							duration: 3000
+						})
+					}
 				})
+
+
 			}
 		}
 	}
@@ -28,7 +74,7 @@
 <style>
 	.oneSign {
 		/* text-align: center; */
-	/* 	position: relative; */
+		/* 	position: relative; */
 		/* height: 100%;
 		width: 100%; */
 		display: flex;
@@ -46,12 +92,5 @@
 		text-align: center;
 		line-height: 320rpx;
 		margin-top: 200rpx;
-		/* display: block; */
-		/* margin: 0 auto; */
-	/* 	position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%,-50%); */
-		
 	}
 </style>

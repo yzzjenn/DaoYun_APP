@@ -70,6 +70,7 @@
 </template>
 
 <script>
+	import uniIcons from '../../components/uni-icons/uni-icons.vue'
 	export default {
 		data() {
 			return {
@@ -317,20 +318,10 @@
 						})
 						return 
 					}
-					this.http.sendRequest('/mobileApp/check?phone='+this.formData.phone,{},'get').then(res =>{
-						console.log(res)
-						if (res.statusCode === 200){
-							uni.showToast({
-								title:'手机号已注册',
-								icon:'none'
-							})
-						}else{
-							this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
-								res => {
+					this.http.sendRequest('/api/code/phoneCode?phoneNumber=' + this.formData.phone, {}, 'post').then(
+						res => {
 									this.code = res.data
 								})
-						}
-					})
 					const that = this
 					that.time = 60
 					const fn = setInterval(function(){
@@ -365,7 +356,9 @@
 					
 			}
 		},
-		components: {}
+		components: {
+			uniIcons
+		}
 	}
 </script>
 

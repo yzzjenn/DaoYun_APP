@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="aboutMeItem">
-			<text>{{message}}</text>
+		<view class="aboutMeItem" @click="goto(message.page)">
+			<text>{{message.text}}</text>
 			<view class="icon">
 				<uni-icons type="arrowright" size="30"></uni-icons>
 			</view>
@@ -10,13 +10,24 @@
 </template>
 
 <script>
+	import {uniIcons} from '@dcloudio/uni-ui'
 	export default {
 		name:"aboutMeItem",
+		components:{
+			uniIcons
+		},
 		props:['message'],
 		data() {
 			return {
 				
 			};
+		},
+		methods:{
+			goto:function(url){
+				uni.navigateTo({
+					url:url
+				})
+			}
 		}
 	}
 </script>

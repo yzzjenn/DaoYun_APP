@@ -1,11 +1,11 @@
 <template>
 	<view class="memberItem">
 		<view class="memberName">
-			<text>却云飞</text>
+			<text>{{student.name}}</text>
 		</view>
 		<view class="memberInfor">
-			<text class="studentId">200327146</text>
-			<text class="empirical">11经验值</text>
+			<text class="studentId">{{student.studentNumber}}</text>
+			<text class="empirical">经验值:{{student.experience}}</text>
 		</view>
 	</view>
 </template>
@@ -13,6 +13,7 @@
 <script>
 	export default {
 		name:"memberItem",
+		props:['student'],
 		data() {
 			return {
 				
@@ -36,7 +37,9 @@
 		.empirical{
 			font-size: 26rpx;
 			color:#F59A23 ;
-			margin:0 0 0 200rpx;
+			// margin:0 0 0 200rpx;
+			position: absolute;
+			right: 40rpx;
 		}
 	}
 }

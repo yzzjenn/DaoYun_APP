@@ -2,7 +2,7 @@
 	<view class="signItem">
 		<view v-for="(item , index) in signItemStyle" :key="index" class="signItemChild">
 			<button :style="{
-				backgroundColor:item.backgroundColor}" @click="goToSign(index)">
+				backgroundColor:item.backgroundColor}" @click="goToSign(index,classId)">
 				<view :class="item.type"></view>
 			</button>
 			<text :style="{
@@ -16,16 +16,17 @@
 <script>
 	export default {
 		name:"signItem",
-		props:['signItemStyle'],
+		props:['signItemStyle','classId'],
 		data() {
 			return {
-				navigateUrl:['../oneSign/oneSign','../gestureSign/gestureSign','../checkIn/checkIn']
+				navigateUrl:['../teaOneSign/teaOneSign?classId=','../teaTimeSign/teaTimeSign?classId=']
 			};
 		},
 		methods:{
-			goToSign(index){
+			goToSign(index,id){
 				uni.navigateTo({
-					url:this.navigateUrl[index]
+					url:this.navigateUrl[index]+id,
+					success: res => {},fail: () => {},complete: () => {}
 				})
 			}
 		}
